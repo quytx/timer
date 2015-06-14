@@ -6,6 +6,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
+var uriUtil = require('mongodb-uri');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var fs = require('fs'); // for MVC
@@ -44,7 +45,13 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
-mongoose.connect('mongodb://localhost/timer');
+var options = { server: { socketOptions: { keepAlive: 1, connectTimeoutMS: 30000 } }, 
+                replset: { socketOptions: { keepAlive: 1, connectTimeoutMS : 30000 } } };
+var mongodbUri = process.env.MONGOLAB_URI;
+var mongooseUri = uriUtil.formatMongoose(mongodbUri);
+mongoose.connect(mongooseUri, options);
+
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
