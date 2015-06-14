@@ -44,7 +44,7 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
-var mongodbUri = process.env.MONGOLAB_URI;
+var mongooseUri = process.env.MONGOLAB_URI;
 
 mongoose.connect(mongooseUri);
 
