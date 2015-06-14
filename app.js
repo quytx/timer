@@ -51,7 +51,7 @@ var mongodbUri = process.env.MONGOLAB_URI;
 var mongooseUri = uriUtil.formatMongoose(mongodbUri);
 mongoose.connect(mongooseUri, options);
 
-
+// mongoose.connect('mongodb://localhost/timer');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
