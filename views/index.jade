@@ -19,7 +19,7 @@ block content
         }
       div(ng-controller="StopWatchCtrl") 
         p Hello #{user.username}
-        div Add a job: 
+        div Add a client: 
         input(type="text", id="newjob", name="login")
         button.btn-primary(data-action="add-job", onclick="addJob()") +
         br
@@ -35,4 +35,7 @@ block content
             #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[button.btn-primary(ng-click="syncJob($index)") Sync] #[br] #[br]                                            
         br
         br 
+        button.btn-warning.btn-lg(ng-click="resetAll()") RESET ALL
+        br
+        br
         a(href="/logout" class="btn btn-default") Logout  

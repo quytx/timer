@@ -130,6 +130,41 @@ router.post('/syncjob', function(req, res) {
     }); 
 });
 
+// Reset
+router.post('/reset', function(req, res) {
+    console.log(req.body);
+
+    if (req.body.jobname == '') {
+        res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
+        res.end();
+        return;
+    }
+    Account.findOne({'username': req.body.username}, function(err, account) {
+        if (err) {
+            console.log("no account found!");
+            res.writeHead(400, 'Job not found', {'content-type' : 'text/plain'});
+            res.end();
+        } else {
+            console.log("found: " + req.body.jobname);
+            for (var i = 0; i < account.jobs.length; i++) {
+                account.jobs[i].hours = 0;
+                account.jobs[i].mins = 0;
+                account.jobs[i].secs = 0;
+                account.markModified('jobs'); 
+                account.save(function(error) {
+                    if (error) {
+                        console.log("failed to save");
+                    } else {
+                        console.log("saved!");
+                    }
+                });
+            }
+            res.writeHead(200, 'Jobs Synced', {'content-type' : 'text/plain'});
+            res.end();
+            return;
+        }   
+    }); 
+});
 
 
 module.exports = router;

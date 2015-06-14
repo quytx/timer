@@ -28,6 +28,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
   
   $scope.stop = function(index) {
     $timeout.cancel($scope.timeout[index]);
+    $scope.syncJob(index);
   };
 
   $scope.reset = function(index) {
@@ -54,6 +55,15 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
       s: currJob.secs
     };
     $.post("/syncjob", data).done(function(data) {
+      location.reload();
+    });
+  }
+
+  $scope.resetAll = function() {
+    var data = {
+      username: user.username
+    };
+    $.post("/reset", data).done(function(data) {
       location.reload();
     });
   }
