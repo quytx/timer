@@ -38,8 +38,98 @@ router.get('/logout', function(req, res) {
     res.redirect('/');
 });
 
-router.get('/ping', function(req, res){
-    res.status(200).send("pong!");
+// Add new job
+router.post('/addjob', function(req, res) {
+    console.log(req.body);
+    if (req.body.jobname == '') {
+        res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
+        res.end();
+        return;
+    }
+    Account.findOne({'username': req.body.username}, function(err, account) {
+        if (err) {
+            console.log("no account found!");
+        } else {
+            console.log(req.body.jobname);
+            account.jobs.push({'jobname': req.body.jobname, "hours": 0, "mins": 0, "secs": 0});
+            account.save();
+            res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
+            res.end();
+        }
+    });
+    
 });
+
+// Delete a job based on job name
+router.post('/deletejob', function(req, res) {
+    console.log(req.body);
+    if (req.body.jobname == '') {
+        res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
+        res.end();
+        return;
+    }
+    Account.findOne({'username': req.body.username}, function(err, account) {
+        if (err) {
+            console.log("no account found!");
+        } else {
+            console.log(req.body.jobname);
+            for (var i = 0; i < account.jobs.length; i++) {
+                if (account.jobs[i].jobname == req.
+                    body.jobname) {
+                    account.jobs.splice(i, 1);
+                    account.save();
+                    res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
+                    res.end();
+                    return;
+                }
+            }
+            res.writeHead(400, 'Job not found', {'content-type' : 'text/plain'});
+            res.end();
+        }
+    }); 
+});
+
+// Sync a job based on job name
+router.post('/syncjob', function(req, res) {
+    console.log(req.body);
+
+    if (req.body.jobname == '') {
+        res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
+        res.end();
+        return;
+    }
+    Account.findOne({'username': req.body.username}, function(err, account) {
+        if (err) {
+            console.log("no account found!");
+        } else {
+            console.log("found: " + req.body.jobname);
+            for (var i = 0; i < account.jobs.length; i++) {
+                if (account.jobs[i].jobname == req.
+                    body.jobname) {
+                    account.jobs[i].hours = parseInt(req.body.h);
+                    account.jobs[i].mins = parseInt(req.body.m);
+                    account.jobs[i].secs = parseInt(req.body.s);
+                    account.markModified('jobs'); 
+                    account.save(function(error) {
+                        if (error) {
+                            console.log("failed to save");
+                        } else {
+                            console.log("saved!");
+                        }
+                    });
+                    console.log("after saving: ");
+                    console.log(account);
+                    res.writeHead(200, 'Job ' + account.jobs[i].jobname + ' Synced', {'content-type' : 'text/plain'});
+                    res.end();
+                    return;
+                }
+            }
+            res.writeHead(400, 'Job not found', {'content-type' : 'text/plain'});
+            res.end();
+        }
+    }); 
+});
+
+
 
 module.exports = router;

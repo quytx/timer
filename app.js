@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
+var fs = require('fs'); // for MVC
 
 var routes = require('./routes/index');
 var users = require('./routes/users');
@@ -43,7 +44,7 @@ passport.serializeUser(Account.serializeUser());
 passport.deserializeUser(Account.deserializeUser());
 
 // mongoose
-mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
+mongoose.connect('mongodb://localhost/timer');
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

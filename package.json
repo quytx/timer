@@ -1,17 +1,11 @@
 {
-  "name": "passport-local-express4",
+  "name": "timer",
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
     "test": "make test"
    },
-  "repository": {
-    "type": "git",
-    "url": "git@github.com:mjhea0/passport-local-express4.git"
-  },
-  "author": "Michael Herman <michael@mherman.org>",
-  "license": "MIT",
   "dependencies": {
     "body-parser": "^1.10.2",
     "chai": "~1.8.1",

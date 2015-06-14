@@ -7,5 +7,32 @@ block content
       br
       a(href="/register") Register
     if (user)
-      p You are currently logged in as #{user.username}
-      a(href="/logout") Logout
+      script.
+        var user = !{JSON.stringify(user)}
+        var jobs = user.jobs;
+        var addJob = function() {
+          var jobName = $('#newjob')[0].value
+          //- console.log(jobName)
+          $.post("/addjob", { username: '#{user.username}', jobname: jobName }).done(function(data) {
+            location.reload();
+          });
+        }
+      div(ng-controller="StopWatchCtrl") 
+        p Hello #{user.username}
+        div Add a job: 
+        input(type="text", id="newjob", name="login")
+        button.btn-primary(data-action="add-job", onclick="addJob()") +
+        br
+        br
+        p Your current jobs:
+        //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
+        br
+        ol
+          li(ng-repeat="job in jobs track by $index")
+            {{job.jobname}} - 
+            {{job.hours}}:{{job.mins}}:{{job.secs}} - [{{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }} hours] <--------  #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]       
+            br 
+            #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[button.btn-primary(ng-click="syncJob($index)") Sync] #[br] #[br]                                            
+        br
+        br 
+        a(href="/logout" class="btn btn-default") Logout  
