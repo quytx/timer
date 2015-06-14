@@ -32,7 +32,7 @@ block content
             {{job.jobname}} - 
             {{job.hours}}:{{job.mins}}:{{job.secs}} - [{{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }} hours] <--------  #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]       
             br 
-            #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[button.btn-primary(ng-click="syncJob($index)") Sync] #[br] #[br]                                            
+            #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
         br
         br 
         button.btn-warning.btn-lg(ng-click="resetAll()") RESET ALL
