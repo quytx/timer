@@ -2,6 +2,22 @@ extends layout
 
 block content
   .container
+    p TIME CONVERTER
+    p In
+    input.col-xs-1(type="number" ng-model="hr1")
+    input.col-xs-1(type="number" ng-model="min1")
+    br
+    p
+    p Out
+    input.col-xs-1(type="number" ng-model="hr2")
+    input.col-xs-1(type="number" ng-model="min2")
+    br  
+    br
+    p Total
+    div.panel.panel-primary.col-xs-2(style="color:purple; font-size:16px", align="left") {{(hr2 + (min2/60) - hr1 - (min1/60)).toFixed(2)}} hour(s) 
+    br
+    br
+    br
     if (!user)
       a(href="/login") Login
       br
