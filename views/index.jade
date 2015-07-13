@@ -2,22 +2,29 @@ extends layout
 
 block content
   .container
-    p TIME CONVERTER
-    input.col-xs-1(type="number" ng-model="hr1")
-    input.col-xs-1(type="number" ng-model="min1")
-    span In
-    br
-    p
-    input.col-xs-1(type="number" ng-model="hr2")
-    input.col-xs-1(type="number" ng-model="min2")
-    span Out
-    br  
-    br
-    p Total (hours)
-    div.panel.panel-primary.col-xs-1(style="color:purple; font-size:16px", align="right") {{(hr2 + (min2/60) - hr1 - (min1/60)).toFixed(2) }} 
-    br
-    br
-    hr
+    label Need Time Converter?  
+        |     
+        input.input-xs(type="checkbox" ng-model="converter")
+        |    
+        span(ng-show="converter" style="color:green") [Show]
+        span(ng-show="!converter" style="color:purple") [Hidden]
+      br
+    div(ng-show="converter")
+        input.col-xs-1(type="number" ng-model="hr1")
+        input.col-xs-1(type="number" ng-model="min1")
+        span In
+        br
+        p
+        input.col-xs-1(type="number" ng-model="hr2")
+        input.col-xs-1(type="number" ng-model="min2")
+        span Out
+        br  
+        br
+        p Total (hours)
+        div.panel.panel-primary.col-xs-1(style="color:purple; font-size:16px", align="right") {{(hr2 + (min2/60) - hr1 - (min1/60)).toFixed(2) }} 
+        br
+        br
+        hr
     if (!user)
       a(href="/login") Login
       br
@@ -48,11 +55,11 @@ block content
         
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
         br
-        table(class="table")
+        table(class="table table-hover table-condensed")
             thead
                 th Client
                 th Duration (hours)
-                th H:M:S
+                th H : M : S
                 th Actions
                 th Others
             tbody

@@ -4,6 +4,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
   $scope.jobs = jobs;
   $scope.timeout = {};
   $scope.sum = {};
+  $scope.converter = false;
  
   var count = function(index) {
     var currJob = $scope.jobs[index];
