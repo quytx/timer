@@ -3,6 +3,7 @@ var myTimer = angular.module('myTimer',[]);
 myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $timeout) {
   $scope.jobs = jobs;
   $scope.timeout = {};
+  $scope.sum = {};
  
   var count = function(index) {
     var currJob = $scope.jobs[index];
@@ -60,12 +61,32 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
   }
 
   $scope.resetAll = function() {
-    var data = {
-      username: user.username
+    var r = confirm("Aer you sure?");
+    if (r) {
+      var data = {
+        username: user.username
+      };
+      $.post("/reset", data).done(function(data) {
+        location.reload();
+      });
+    }
+  }
+
+  $scope.sumTotal = function(jobs) {
+    var h = 0, m = 0, s = 0, hrs = 0;
+    for (var i = 0; i < jobs.length; i++) {
+      h += jobs[i].hours;
+      m += jobs[i].mins;
+      s += jobs[i].secs;
+    }
+    hrs = (h + m/60 + s/3600).toFixed(2);
+    $scope.sum = {
+      h: h,
+      m: m,
+      s: s,
+      hrs: hrs
     };
-    $.post("/reset", data).done(function(data) {
-      location.reload();
-    });
+    return $scope.sum;
   }
 
   // $scope.syncAllJob = function() {

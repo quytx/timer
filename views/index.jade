@@ -17,7 +17,7 @@ block content
     div.panel.panel-primary.col-xs-1(style="color:purple; font-size:16px", align="right") {{(hr2 + (min2/60) - hr1 - (min1/60)).toFixed(2) }} 
     br
     br
-    br
+    hr
     if (!user)
       a(href="/login") Login
       br
@@ -34,24 +34,59 @@ block content
           });
         }
       div(ng-controller="StopWatchCtrl") 
-        p Hello #{user.username}
-        div Add a client: 
-        input(type="text", id="newjob", name="login")
-        button.btn-primary(data-action="add-job", onclick="addJob()") +
-        br
-        br
-        p Your current jobs:
+        //- h3 Hello #{user.username}
         div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit STOP before Starting another client!
+        br
+        b Search or Add a client: 
+        br
+        input.col-md-3(type="text", id="newjob", name="login" ng-model="searchText")
+        button.btn-primary(data-action="add-job", onclick="addJob()") Add
+        br
+        br
+        //- p #{user.username}'s current clients:
+        
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
         br
-        ol
-          li(ng-repeat="job in jobs track by $index")
-            {{job.jobname}} - 
-            {{job.hours}}:{{job.mins}}:{{job.secs}} - [{{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }} hours] <--------  #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]       
-            br 
-            #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
-        br
-        br 
+        table(class="table")
+            thead
+                th Client
+                th H:M:S
+                th Duration (hours)
+                th Actions
+                th Remove
+            tbody
+                tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index")
+                    td {{job.jobname}}
+                    td {{job.hours}}:{{job.mins}}:{{job.secs}}
+                    td(style="color:black") 
+                        {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
+                    td 
+                        #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
+                    td 
+                        #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]    
+                hr        
+                tr
+                    td
+                        b Total
+                    td
+                        //- b {{ sumTotal(filteredList).h }}:{{ sumTotal(filteredList).m }}:{{ sumTotal(filteredList).s }}
+                    td(style="color:blue")
+                        b {{ sumTotal(filteredList).hrs }} (hours)
+                    td
+                    td        
+
+        //- ol
+        //-   li(ng-repeat="job in jobs | filter:searchText track by $index")
+        //-     {{job.jobname}} - 
+        //-     {{job.hours}}:{{job.mins}}:{{job.secs}} - 
+        //-     | [
+        //-     b(style="color:blue") 
+        //-         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }} 
+        //-     | hours]  <--------  #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]       
+        //-     br 
+        //-     #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
+        //- br
+        //- br 
         button.btn-warning.btn-lg(ng-click="resetAll()") RESET ALL
         br
         br
