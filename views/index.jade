@@ -35,13 +35,14 @@ block content
         }
       div(ng-controller="StopWatchCtrl") 
         //- h3 Hello #{user.username}
-        div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit STOP before Starting another client!
+        div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit 
+            span(style="color:red") STOP to SAVE 
+            | before Starting another client!
         br
         b Search or Add a client: 
         br
         input.col-md-3(type="text", id="newjob", name="login" ng-model="searchText")
         button.btn-primary(data-action="add-job", onclick="addJob()") Add
-        br
         br
         //- p #{user.username}'s current clients:
         
@@ -87,7 +88,8 @@ block content
         //-     #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
         //- br
         //- br 
-        button.btn-warning.btn-lg(ng-click="resetAll()") RESET ALL
+        hr
+        button(ng-click="resetAll()") RESET ALL
         br
         br
         a(href="/logout" class="btn btn-default") Logout  
