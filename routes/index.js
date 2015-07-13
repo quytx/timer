@@ -40,7 +40,6 @@ router.get('/logout', function(req, res) {
 
 // Add new job
 router.post('/addjob', function(req, res) {
-    console.log(req.body);
     if (req.body.jobname == '') {
         res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
         res.end();
@@ -50,9 +49,9 @@ router.post('/addjob', function(req, res) {
         if (err) {
             console.log("no account found!");
         } else {
-            console.log(req.body.jobname);
             account.jobs.push({'jobname': req.body.jobname, "hours": 0, "mins": 0, "secs": 0});
             account.save();
+            console.log("Added client: " + req.body.jobname);
             res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
             res.end();
         }
@@ -62,7 +61,7 @@ router.post('/addjob', function(req, res) {
 
 // Delete a job based on job name
 router.post('/deletejob', function(req, res) {
-    console.log(req.body);
+    // console.log(req.body);
     if (req.body.jobname == '') {
         res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
         res.end();
@@ -72,12 +71,12 @@ router.post('/deletejob', function(req, res) {
         if (err) {
             console.log("no account found!");
         } else {
-            console.log(req.body.jobname);
             for (var i = 0; i < account.jobs.length; i++) {
                 if (account.jobs[i].jobname == req.
                     body.jobname) {
                     account.jobs.splice(i, 1);
                     account.save();
+                    console.log("Removed client: " + req.body.jobname);
                     res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
                     res.end();
                     return;
@@ -117,8 +116,8 @@ router.post('/syncjob', function(req, res) {
                             console.log("saved!");
                         }
                     });
-                    console.log("after saving: ");
-                    console.log(account);
+                    // console.log("after saving: ");
+                    // console.log(account);
                     res.writeHead(200, 'Job ' + account.jobs[i].jobname + ' Synced', {'content-type' : 'text/plain'});
                     res.end();
                     return;
