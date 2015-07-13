@@ -54,7 +54,7 @@ block content
                 th Duration (hours)
                 th H:M:S
                 th Actions
-                th Remove
+                th Others
             tbody
                 tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index")
                     td {{job.jobname}}
@@ -62,9 +62,9 @@ block content
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
                     td {{job.hours}}:{{job.mins}}:{{job.secs}}
                     td 
-                        #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
+                        #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[br] #[br]                                            
                     td 
-                        #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]    
+                        #[button.btn-warning.btn-xs(ng-click="reset($index)") Reset] #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]    
                 hr        
                 tr
                     td

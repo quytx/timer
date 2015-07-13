@@ -51,7 +51,7 @@ router.post('/addjob', function(req, res) {
         } else {
             account.jobs.push({'jobname': req.body.jobname, "hours": 0, "mins": 0, "secs": 0});
             account.save();
-            console.log("Added client: " + req.body.jobname);
+            console.log("===Added client: " + req.body.jobname);
             res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
             res.end();
         }
@@ -76,7 +76,7 @@ router.post('/deletejob', function(req, res) {
                     body.jobname) {
                     account.jobs.splice(i, 1);
                     account.save();
-                    console.log("Removed client: " + req.body.jobname);
+                    console.log("===Removed client: " + req.body.jobname);
                     res.writeHead(200, 'Added', {'content-type' : 'text/plain'});
                     res.end();
                     return;
@@ -101,7 +101,7 @@ router.post('/syncjob', function(req, res) {
         if (err) {
             console.log("no account found!");
         } else {
-            console.log("found: " + req.body.jobname);
+            console.log("===found: " + req.body.jobname);
             for (var i = 0; i < account.jobs.length; i++) {
                 if (account.jobs[i].jobname == req.
                     body.jobname) {
@@ -113,7 +113,7 @@ router.post('/syncjob', function(req, res) {
                         if (error) {
                             console.log("failed to save");
                         } else {
-                            console.log("saved!");
+                            console.log("===saved!");
                         }
                     });
                     // console.log("after saving: ");
@@ -144,7 +144,7 @@ router.post('/reset', function(req, res) {
             res.writeHead(400, 'Job not found', {'content-type' : 'text/plain'});
             res.end();
         } else {
-            console.log("found: " + req.body.jobname);
+            console.log("===found: " + req.body.jobname);
             for (var i = 0; i < account.jobs.length; i++) {
                 account.jobs[i].hours = 0;
                 account.jobs[i].mins = 0;
