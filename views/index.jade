@@ -51,16 +51,16 @@ block content
         table(class="table")
             thead
                 th Client
-                th H:M:S
                 th Duration (hours)
+                th H:M:S
                 th Actions
                 th Remove
             tbody
                 tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index")
                     td {{job.jobname}}
-                    td {{job.hours}}:{{job.mins}}:{{job.secs}}
                     td(style="color:black") 
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
+                    td {{job.hours}}:{{job.mins}}:{{job.secs}}
                     td 
                         #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[button.btn-warning(ng-click="reset($index)") Reset] #[br] #[br]                                            
                     td 
@@ -69,10 +69,10 @@ block content
                 tr
                     td
                         b Total
+                    td(style="color:blue")
+                        b {{ sumTotal(filteredList).hrs }} (hours)    
                     td
                         //- b {{ sumTotal(filteredList).h }}:{{ sumTotal(filteredList).m }}:{{ sumTotal(filteredList).s }}
-                    td(style="color:blue")
-                        b {{ sumTotal(filteredList).hrs }} (hours)
                     td
                     td        
 
