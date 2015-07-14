@@ -1,10 +1,11 @@
 var myTimer = angular.module('myTimer',[]);
 
-myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $timeout) {
+myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function($scope, $timeout, $interval) {
   $scope.jobs = jobs;
   $scope.timeout = {};
   $scope.sum = {};
   $scope.converter = false;
+  $scope.autoSave = {};
  
   var count = function(index) {
     var currJob = $scope.jobs[index];
@@ -26,15 +27,32 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
     $timeout(function() {
       count(index);
     }, 1000);
+
+    // Start auto save
+    $scope.autoSave[index] = $scope.autoSync(index); // *********** AUTO SAVE ************
   };
   
   $scope.stop = function(index) {
     $timeout.cancel($scope.timeout[index]);
+
+    if ($scope.autoSave[index]) {   // *********** AUTO SAVE ************
+      // console.log("stop auto saved for index " + index);  // *********** AUTO SAVE ************
+      $interval.cancel($scope.autoSave[index]); // *********** AUTO SAVE ************
+      $scope.autoSave[index] = undefined; // *********** AUTO SAVE ************
+    }   // *********** AUTO SAVE ************
+
     $scope.syncJob(index);
   };
 
   $scope.reset = function(index) {
     $timeout.cancel($scope.timeout[index]);
+
+    if ($scope.autoSave[index]) {   // *********** AUTO SAVE ************
+      // console.log("stop auto saved for index " + index);  // *********** AUTO SAVE ************
+      $interval.cancel($scope.autoSave[index]); // *********** AUTO SAVE ************
+      $scope.autoSave[index] = undefined; // *********** AUTO SAVE ************
+    }   // *********** AUTO SAVE ************
+
     var currJob = $scope.jobs[index];
     currJob.hours = 0;
     currJob.mins = 0;
@@ -42,10 +60,53 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
   };
 
   $scope.deleteJob = function(index) {
+    if ($scope.autoSave[index]) {   // *********** AUTO SAVE ************
+      // console.log("stop auto saved for index " + index);  // *********** AUTO SAVE ************
+      $interval.cancel($scope.autoSave[index]); // *********** AUTO SAVE ************
+      $scope.autoSave[index] = undefined; // *********** AUTO SAVE ************
+    }   // *********** AUTO SAVE ************
     $.post("/deletejob", { username: user.username, jobname: $scope.jobs[index].jobname }).done(function(data) {
       location.reload();
     });
   };
+
+
+  /********************** AUTO SAVE *********************/
+  var getData = function(user_name, job_name) {
+    var currJob;
+    for (var i = 0; i < $scope.jobs.length; i++) {
+      if ($scope.jobs[i].jobname == job_name) {
+        currJob =  $scope.jobs[i];
+        break;
+      }
+    }
+    return {
+      username: user_name,
+      jobname: job_name,
+      h: currJob.hours,
+      m: currJob.mins, 
+      s: currJob.secs
+    }
+  }
+
+  $scope.autoSync = function(index) {
+    var user_name = user.username;
+    var job_name = $scope.jobs[index].jobname;
+
+    // Set interval
+    var intervalObject = $interval(function() {
+      var data = getData(user_name, job_name);
+      // console.log(data);
+      $.post("/autosync", data).done(function(res) {
+        // console.log("auto saved: index " + index);
+        // To-do: update last time saved
+        // location.reload();
+      });
+    }, 10000);
+
+    return intervalObject;
+  }
+  /*************** END AUTO SAVE **************************/
 
   $scope.syncJob = function(index) {
     var currJob = $scope.jobs[index];
@@ -62,7 +123,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', function($scope, $tim
   }
 
   $scope.resetAll = function() {
-    var r = confirm("Aer you sure?");
+    var r = confirm("Are you sure?");
     if (r) {
       var data = {
         username: user.username

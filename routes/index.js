@@ -129,6 +129,47 @@ router.post('/syncjob', function(req, res) {
     }); 
 });
 
+// Auto sync a job
+router.post('/autosync', function(req, res) {
+    console.log(req.body);
+
+    if (req.body.jobname == '') {
+        res.writeHead(400, 'Job name cannot be blank', {'content-type' : 'text/plain'});
+        res.end();
+        return;
+    }
+    Account.findOne({'username': req.body.username}, function(err, account) {
+        if (err) {
+            console.log("no account found!");
+        } else {
+            console.log("===found: " + req.body.jobname);
+            for (var i = 0; i < account.jobs.length; i++) {
+                if (account.jobs[i].jobname == req.
+                    body.jobname) {
+                    account.jobs[i].hours = parseInt(req.body.h);
+                    account.jobs[i].mins = parseInt(req.body.m);
+                    account.jobs[i].secs = parseInt(req.body.s);
+                    account.markModified('jobs'); 
+                    account.save(function(error) {
+                        if (error) {
+                            console.log("failed to auto save");
+                        } else {
+                            console.log("===auto saved!");
+                        }
+                    });
+                    // console.log("after saving: ");
+                    // console.log(account);
+                    res.writeHead(200, 'Job ' + account.jobs[i].jobname + ' Auto Synced', {'content-type' : 'text/plain'});
+                    res.end();
+                    return;
+                }
+            }
+            res.writeHead(400, 'Job not found', {'content-type' : 'text/plain'});
+            res.end();
+        }
+    }); 
+});
+
 // Reset
 router.post('/reset', function(req, res) {
     console.log(req.body);
