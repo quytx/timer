@@ -6,3 +6,12 @@ body {
 a {
   color: #00B7FF;
 }
+
+caption {
+    color: black !important;
+    /*font-weight: bold;*/
+}
+
+caption span {
+    /*color: blue !important;*/
+}

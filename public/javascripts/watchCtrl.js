@@ -1,4 +1,4 @@
-var myTimer = angular.module('myTimer',[]);
+var myTimer = angular.module('myTimer',['ui.bootstrap']);
 
 myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function($scope, $timeout, $interval) {
   $scope.jobs = jobs;
@@ -6,6 +6,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   $scope.sum = {};
   $scope.converter = false;
   $scope.autoSave = {};
+  $scope.activeJobs = [];
  
   var count = function(index) {
     var currJob = $scope.jobs[index];
@@ -27,7 +28,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
     $timeout(function() {
       count(index);
     }, 1000);
-
+    $scope.activeJobs.push($scope.jobs[index].jobname);
     // Start auto save
     $scope.autoSave[index] = $scope.autoSync(index); // *********** AUTO SAVE ************
   };
@@ -87,6 +88,10 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
       m: currJob.mins, 
       s: currJob.secs
     }
+  }
+
+  $scope.isActive = function(job) {
+    return $scope.activeJobs.indexOf(job.jobname) > -1;
   }
 
   $scope.autoSync = function(index) {

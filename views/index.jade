@@ -2,6 +2,15 @@ extends layout
 
 block content
   .container
+    nav(class="navbar navbar-inverse navbar-fixed-top")
+      div(class="container-fluid")
+        div(class="navbar-header")
+          a(class="navbar-brand" href="#") JobTimer 
+        div
+          ul(class="nav navbar-nav")
+            li(class="active")
+              a(href="/") Hello, #{user.username} 
+    br          
     label Need Time Converter?  
         |     
         input.input-xs(type="checkbox" ng-model="converter")
@@ -42,10 +51,10 @@ block content
         }
       div(ng-controller="StopWatchCtrl") 
         //- h3 Hello #{user.username}
-        div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit 
-            span(style="color:red") STOP to SAVE 
-            | before Starting another client!
-        div.panel.panel-primary(style="color:blue; font-size:18px", align="center") New feature added: Now auto-save ACTIVE CLIENT every 10 seconds
+        //- div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit 
+        //-     span(style="color:red") STOP to SAVE 
+        //-     | before Starting another client!
+        //- div.panel.panel-primary(style="color:blue; font-size:18px", align="center") New feature added: Now auto-save ACTIVE CLIENT every 10 seconds
         br
         b Search or Add a client: 
         br
@@ -56,15 +65,21 @@ block content
         
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
         br
-        table(class="table table-hover table-condensed")
+        table(class="table table-hover table-bordered table-condensed")
+            caption(class="text-left") Active Job(s): 
+                |      
+                span(ng-repeat="job in activeJobs" style="font-weight:800;background-color:yellow") {{job}}, 
+                div(style="float:right") Number of jobs running: 
+                    span(style="color:black !important;font-weight:800;background-color:yellow") {{ activeJobs.length }}   
             thead
-                th Client
-                th Duration (hours)
-                th H : M : S
-                th Actions
-                th Others
+                tr(class="info")
+                    th.col-md-3 Client
+                    th.col-md-2 Duration (hours)
+                    th.col-md-2 H : M : S
+                    th.col-md-3 Actions
+                    th.col-md-2 Others
             tbody
-                tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index")
+                tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index" ng-class="{'warning': isActive(job)}")
                     td {{job.jobname}}
                     td(style="color:black") 
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
