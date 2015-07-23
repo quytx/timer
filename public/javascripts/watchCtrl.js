@@ -7,7 +7,16 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   $scope.converter = false;
   $scope.autoSave = {};
   $scope.activeJobs = [];
- 
+
+  $scope.getIndex = function(job) {
+    for (var i = 0; i < $scope.jobs.length; i++) {
+      if ($scope.jobs[i].jobname == job.jobname) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
   var count = function(index) {
     var currJob = $scope.jobs[index];
     currJob.secs++;
@@ -25,6 +34,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   }
   
   $scope.start = function(index) {
+    console.log(index);
     $timeout(function() {
       count(index);
     }, 1000);

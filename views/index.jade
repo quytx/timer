@@ -55,6 +55,12 @@ block content
         //-     span(style="color:red") STOP to SAVE 
         //-     | before Starting another client!
         //- div.panel.panel-primary(style="color:blue; font-size:18px", align="center") New feature added: Now auto-save ACTIVE CLIENT every 10 seconds
+        div.panel.panel-primary(style="color:blue; font-size:16px", align="center") 
+            span(style="color:red !important") Update 7/23:  
+            br
+            | - Fix a bug where start/stop button was applied to a DIFFERENT job when the list is being filtered!
+            br
+            span(style="color:purple !important") - Now showing which job is currently active   
         br
         b Search or Add a client: 
         br
@@ -65,7 +71,7 @@ block content
         
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
         br
-        table(class="table table-hover table-bordered table-condensed")
+        table(class="table table-hover table-condensed")
             caption(class="text-left") Active Job(s): 
                 |      
                 span(ng-repeat="job in activeJobs" style="font-weight:800;background-color:yellow") {{job}}, 
@@ -79,15 +85,15 @@ block content
                     th.col-md-3 Actions
                     th.col-md-2 Others
             tbody
-                tr(ng-repeat="job in (filteredList = (jobs | filter:searchText)) track by $index" ng-class="{'warning': isActive(job)}")
+                tr(ng-repeat="job in (filteredList = (jobs | filter:searchText))" ng-class="{'warning': isActive(job)}")
                     td {{job.jobname}}
                     td(style="color:black") 
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
                     td {{job.hours}}:{{job.mins}}:{{job.secs}}
                     td 
-                        #[button.btn-success(ng-click="start($index)") Start] #[button.btn-danger(ng-click="stop($index)") Stop] #[br] #[br]                                            
+                        #[button.btn-success(ng-click="start(getIndex(job))") Start] #[button.btn-danger(ng-click="stop(getIndex(job))") Stop] #[br] #[br]                                            
                     td 
-                        #[button.btn-warning.btn-xs(ng-click="reset($index)") Reset] #[button.btn-danger.btn-xs(ng-click="deleteJob($index)") Remove]    
+                        #[button.btn-warning.btn-xs(ng-click="reset(getIndex(job))") Reset] #[button.btn-danger.btn-xs(ng-click="deleteJob(getIndex(job))") Remove]    
                 hr        
                 tr
                     td
