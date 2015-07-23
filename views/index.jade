@@ -2,15 +2,7 @@ extends layout
 
 block content
   .container
-    nav(class="navbar navbar-inverse navbar-fixed-top")
-      div(class="container-fluid")
-        div(class="navbar-header")
-          a(class="navbar-brand" href="#") JobTimer 
-        div
-          ul(class="nav navbar-nav")
-            li(class="active")
-              a(href="/") Hello, #{user.username} 
-    br          
+    br       
     label Need Time Converter?  
         |     
         input.input-xs(type="checkbox" ng-model="converter")
@@ -49,6 +41,16 @@ block content
             location.reload();
           });
         }
+
+      nav(class="navbar navbar-inverse navbar-fixed-top")
+        div(class="container-fluid")
+            div(class="navbar-header")
+                a(class="navbar-brand" href="/") JobTimer 
+            div
+                ul(class="nav navbar-nav")
+                    li(class="active")
+                        a(href="/") Hello, #{user.username} 
+      br     
       div(ng-controller="StopWatchCtrl") 
         //- h3 Hello #{user.username}
         //- div.panel.panel-danger(style="color:purple; font-size:18px", align="center") Remember to hit 
