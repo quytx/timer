@@ -57,18 +57,22 @@ block content
         //-     span(style="color:red") STOP to SAVE 
         //-     | before Starting another client!
         //- div.panel.panel-primary(style="color:blue; font-size:18px", align="center") New feature added: Now auto-save ACTIVE CLIENT every 10 seconds
-        div.panel.panel-primary(style="color:blue; font-size:16px", align="center") 
-            span(style="color:red !important") Update 7/23:  
+        div.panel.panel-info(style="color:blue; font-size:16px", align="center") 
+            span(style="color:red !important") Update 7/24:  
+            //- br
+            //- | - Fix a bug where start/stop button was applied to a DIFFERENT job when the list is being filtered!
             br
-            | - Fix a bug where start/stop button was applied to a DIFFERENT job when the list is being filtered!
-            br
-            span(style="color:purple !important") - Now showing which job is currently active   
+            span(style="color:blue !important") - Added pop-up confirmation windows for start/reset/remove to prevent accidental click
         br
-        b Search or Add a client: 
-        br
-        input.col-md-3(type="text", id="newjob", name="login" ng-model="searchText")
-        button.btn-primary(data-action="add-job", onclick="addJob()") Add
-        br
+        //- b Search or Add a client: 
+        //- br
+        //- br
+        div(class="row")
+            div.col-md-4.col-sm-6.col-xs-9    
+                input(type="text", id="newjob", name="login" ng-model="searchText" placeholder="Search/Add Client").form-control
+            div.col-md-1.col-sm-2.col-xs-3    
+                button.btn-primary(data-action="add-job", onclick="addJob()").form-control Add
+        //- br
         //- p #{user.username}'s current clients:
         
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
@@ -92,10 +96,16 @@ block content
                     td(style="color:black") 
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
                     td(ng-style="isActive(job) ? {'color':'red'} : {'color':'black'}") {{job.hours}}:{{job.mins}}:{{job.secs}}
-                    td 
-                        #[button.btn-success(ng-click="start(getIndex(job))") Start] #[button.btn-danger(ng-click="stop(getIndex(job))") Stop] #[br] #[br]                                            
-                    td 
-                        #[button.btn-warning.btn-xs(ng-click="reset(getIndex(job))") Reset] #[button.btn-danger.btn-xs(ng-click="deleteJob(getIndex(job))") Remove]    
+                    td.form-group(class="row") 
+                        div.col-md-4
+                            #[button.btn-success(ng-click="start(getIndex(job))").form-control Start] 
+                        div.col-md-4    
+                            #[button.btn-danger(ng-click="stop(getIndex(job))").form-control Stop] 
+                    td.form-group(class="row") 
+                        div.col-md-6 
+                            #[button.btn-warning(ng-click="reset(getIndex(job))").form-control Reset] 
+                        div.col-md-6    
+                            #[button.btn-danger(ng-click="deleteJob(getIndex(job))").form-control &#xd7;]    
                 hr        
                 tr
                     td
