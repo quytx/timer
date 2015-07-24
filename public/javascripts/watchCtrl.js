@@ -1,6 +1,6 @@
 var myTimer = angular.module('myTimer',['ui.bootstrap']);
 
-myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function($scope, $timeout, $interval) {
+myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval', '$window', function($scope, $timeout, $interval, $window) {
   $scope.jobs = jobs;
   $scope.timeout = {};
   $scope.sum = {};
@@ -34,7 +34,12 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   }
   
   $scope.start = function(index) {
-    console.log(index);
+    if ($scope.activeJobs.length > 0) {
+      if(!$window.confirm('Client ' + $scope.activeJobs[0] + ' is still running. Are you sure you want to continue?' )) {
+        return;
+      }
+    }
+
     $timeout(function() {
       count(index);
     }, 1000);
@@ -56,6 +61,10 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   };
 
   $scope.reset = function(index) {
+    if(!$window.confirm('After reseting if you want to save it to the database please click STOP')) {
+      return;
+    }
+
     $timeout.cancel($scope.timeout[index]);
 
     if ($scope.autoSave[index]) {   // *********** AUTO SAVE ************
@@ -71,6 +80,10 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval',function(
   };
 
   $scope.deleteJob = function(index) {
+    if(!$window.confirm('Are you sure you want to delete client: "' + $scope.jobs[index].jobname + '"')) {
+      return;
+    }
+
     if ($scope.autoSave[index]) {   // *********** AUTO SAVE ************
       // console.log("stop auto saved for index " + index);  // *********** AUTO SAVE ************
       $interval.cancel($scope.autoSave[index]); // *********** AUTO SAVE ************

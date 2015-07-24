@@ -91,7 +91,7 @@ block content
                     td {{job.jobname}}
                     td(style="color:black") 
                         {{ (job.hours + job.mins/60 + job.secs/3600).toFixed(2) }}
-                    td {{job.hours}}:{{job.mins}}:{{job.secs}}
+                    td(ng-style="isActive(job) ? {'color':'red'} : {'color':'black'}") {{job.hours}}:{{job.mins}}:{{job.secs}}
                     td 
                         #[button.btn-success(ng-click="start(getIndex(job))") Start] #[button.btn-danger(ng-click="stop(getIndex(job))") Stop] #[br] #[br]                                            
                     td 
