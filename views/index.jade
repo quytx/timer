@@ -45,7 +45,7 @@ block content
       nav(class="navbar navbar-inverse navbar-fixed-top")
         div(class="container-fluid")
             div(class="navbar-header")
-                a(class="navbar-brand" href="/") JobTimer 
+                a(class="navbar-brand" href="/") ClientTimer 
             div
                 ul(class="nav navbar-nav")
                     li(class="active")
@@ -78,10 +78,10 @@ block content
         //- button.btn-lg.btn-primary(ng-click="syncAllJob()") Sync All	
         br
         table(class="table table-hover table-condensed")
-            caption(class="text-left") Active Job(s): 
+            caption(class="text-left") Active Client(s): 
                 |      
                 span(ng-repeat="job in activeJobs" style="font-weight:800;background-color:yellow") {{job}}, 
-                div(style="float:right") Number of jobs running: 
+                div(style="float:right") Number of clients running: 
                     span(style="color:black !important;font-weight:800;background-color:yellow") {{ activeJobs.length }}   
             thead
                 tr(class="info")
