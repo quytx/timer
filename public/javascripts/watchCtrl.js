@@ -17,6 +17,10 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval', '$window
     return -1;
   }
 
+  $scope.isActive = function(job) {
+    return $scope.activeJobs.indexOf(job.jobname) > -1;
+  }
+
   var count = function(index) {
     var currJob = $scope.jobs[index];
     currJob.secs++;
@@ -34,8 +38,12 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval', '$window
   }
   
   $scope.start = function(index) {
+    if ($scope.isActive($scope.jobs[index])) {
+      alert('Client ' + $scope.jobs[index].jobname + ' is already running!');
+      return;
+    }
     if ($scope.activeJobs.length > 0) {
-      if(!$window.confirm('Client ' + $scope.activeJobs[0] + ' is still running. Are you sure you want to continue?' )) {
+      if(!$window.confirm('Another Client: ' + $scope.activeJobs[0] + ' is already running. Are you sure you want to continue?' )) {
         return;
       }
     }
@@ -113,9 +121,7 @@ myTimer.controller('StopWatchCtrl', ['$scope', '$timeout', '$interval', '$window
     }
   }
 
-  $scope.isActive = function(job) {
-    return $scope.activeJobs.indexOf(job.jobname) > -1;
-  }
+  
 
   $scope.autoSync = function(index) {
     var user_name = user.username;
